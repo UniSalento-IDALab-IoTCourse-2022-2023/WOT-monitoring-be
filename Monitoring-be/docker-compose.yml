@@ -11,6 +11,8 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=admin
+    networks:
+      - monitoringbe_net
 
   # app
   monitoringbe:
@@ -28,6 +30,8 @@ services:
       - ./build/libs/Monitoring-be-0.0.1-SNAPSHOT.jar:/app/app.jar
     working_dir: /app
     entrypoint: java -Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000 -jar /app/app.jar
+    networks:
+      - monitoringbe_net
 
   # mongodb
   mongodb_monitoringbe:
@@ -35,3 +39,9 @@ services:
     container_name: mongodb_monitoringbe
     ports:
       - 27027:27017
+    networks:
+      - monitoringbe_net
+
+networks:
+  monitoringbe_net:
+    driver: bridge

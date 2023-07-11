@@ -40,7 +40,7 @@ public class ReceiverServiceImpl implements IReceiverServiceImpl {
   @Override
   @RabbitListener(queues="alarm-queue")
   public void receiveAlarm(String jsonAlarmInfo) throws ResourceNotFoundException {
-    System.out.println("\n+---------------- - -  -  -   -\nREQUEST received: " + jsonAlarmInfo + "\n+---------------- - -  -  -   -\n");
+    System.out.println("\n+---------------- - -  -  -   -\n🚨 ALARM received: " + jsonAlarmInfo + "\n+---------------- - -  -  -   -\n");
 
     Gson gson = new Gson();
 

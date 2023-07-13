@@ -15,5 +15,6 @@ public interface IUserRepository extends MongoRepository<User, String> {
     Optional<User> findByEmail(String email);
     Optional<User> findByName(String name);
     Optional<User> findBySurname(String surname);
+    Optional<User> findByAddress(String address);
     Optional<User> findByBoilerId(String boilerId);
 }

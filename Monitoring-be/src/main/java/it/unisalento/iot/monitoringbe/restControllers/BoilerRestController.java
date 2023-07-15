@@ -10,7 +10,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,10 +59,13 @@ public class BoilerRestController {
    */
   @PostMapping(path="/createBoiler", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<BoilerDTO> createBoiler(@RequestBody BoilerDTO boilerDTO) {
+    Date date = new Date();
 
     Boiler boiler = convertBoilerDTOtoBoiler(boilerDTO);
+    boiler.setDate(date);
     Boiler saved = boilerRepository.save(boiler);
     boilerDTO.setId(saved.getId());
+    boilerDTO.setDate(date);
 
     return new ResponseEntity<>(boilerDTO, HttpStatus.ACCEPTED);
   }

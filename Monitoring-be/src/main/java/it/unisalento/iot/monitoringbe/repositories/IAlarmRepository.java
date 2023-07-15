@@ -4,6 +4,7 @@ import it.unisalento.iot.monitoringbe.domains.Alarm;
 import it.unisalento.iot.monitoringbe.domains.AlarmType;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -11,6 +12,6 @@ import java.util.Optional;
  */
 public interface IAlarmRepository extends MongoRepository<Alarm, String> {
 
-  Optional<Alarm> findByAlarmType(AlarmType alarmType);
-  Optional<Alarm> findByBoilerId(String boilerId);
+  List<Alarm> findByAlarmType(AlarmType alarmType);
+  List<Alarm> findByBoilerId(String boilerId);
 }

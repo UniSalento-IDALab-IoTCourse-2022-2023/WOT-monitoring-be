@@ -3,8 +3,10 @@ package it.unisalento.iot.monitoringbe.restControllers;
 import it.unisalento.iot.monitoringbe.domains.AggregatedData;
 import it.unisalento.iot.monitoringbe.domains.Alarm;
 import it.unisalento.iot.monitoringbe.domains.AlarmType;
+import it.unisalento.iot.monitoringbe.domains.User;
 import it.unisalento.iot.monitoringbe.dto.AggregatedDataDTO;
 import it.unisalento.iot.monitoringbe.dto.AlarmDTO;
+import it.unisalento.iot.monitoringbe.dto.UserDTO;
 import it.unisalento.iot.monitoringbe.repositories.IAggregatedDataRepository;
 import it.unisalento.iot.monitoringbe.repositories.IAlarmRepository;
 import org.modelmapper.ModelMapper;
@@ -60,7 +62,7 @@ public class AggregatedDataRestController {
    */
   @GetMapping(value = "/getByBoilerId/{boilerId}")
   public List<AggregatedDataDTO> getByBoilerId(@PathVariable String boilerId) {
-    return Collections.singletonList(convertAggregatedDataToAggregatedDataDTO(aggregatedDataRepository.findByBoilerId(boilerId)));
+    return convertAggregatedDataListToAggregatedDataDTOList(aggregatedDataRepository.findByBoilerId(boilerId));
   }
 
   /**
@@ -70,7 +72,7 @@ public class AggregatedDataRestController {
    */
   @GetMapping(value = "/getByTemperatureAverageData/{temperatureAverageData}")
   public List<AggregatedDataDTO> getByTemperatureAverageData(@PathVariable float temperatureAverageData) {
-    return Collections.singletonList(convertAggregatedDataToAggregatedDataDTO(aggregatedDataRepository.findByTemperatureAverageData(temperatureAverageData)));
+    return convertAggregatedDataListToAggregatedDataDTOList(aggregatedDataRepository.findByTemperatureAverageData(temperatureAverageData));
   }
 
   /**
@@ -80,7 +82,7 @@ public class AggregatedDataRestController {
    */
   @GetMapping(value = "/getByPressureAverageData/{pressureAverageData}")
   public List<AggregatedDataDTO> getByPressureAverageData(@PathVariable float pressureAverageData) {
-    return Collections.singletonList(convertAggregatedDataToAggregatedDataDTO(aggregatedDataRepository.findByPressureAverageData(pressureAverageData)));
+    return convertAggregatedDataListToAggregatedDataDTOList(aggregatedDataRepository.findByPressureAverageData(pressureAverageData));
   }
 
   /**
@@ -90,7 +92,7 @@ public class AggregatedDataRestController {
    */
   @GetMapping(value = "/getByCarbonMonoxideAverageData/{carbonMonoxideAverageData}")
   public List<AggregatedDataDTO> getByCarbonMonoxideAverageData(@PathVariable float carbonMonoxideAverageData) {
-    return Collections.singletonList(convertAggregatedDataToAggregatedDataDTO(aggregatedDataRepository.findByCarbonMonoxideAverageData(carbonMonoxideAverageData)));
+    return convertAggregatedDataListToAggregatedDataDTOList(aggregatedDataRepository.findByCarbonMonoxideAverageData(carbonMonoxideAverageData));
   }
 
   /**
@@ -100,7 +102,7 @@ public class AggregatedDataRestController {
    */
   @GetMapping(value = "/getByPerformanceAverageData/{performanceAverageData}")
   public List<AggregatedDataDTO> getByPerformanceAverageData(@PathVariable float performanceAverageData) {
-    return Collections.singletonList(convertAggregatedDataToAggregatedDataDTO(aggregatedDataRepository.findByPerformanceAverageData(performanceAverageData)));
+    return convertAggregatedDataListToAggregatedDataDTOList(aggregatedDataRepository.findByPerformanceAverageData(performanceAverageData));
   }
 
   // MODEL MAPPER:
@@ -121,5 +123,20 @@ public class AggregatedDataRestController {
    */
   private AggregatedDataDTO convertAggregatedDataToAggregatedDataDTO(Optional<AggregatedData> aggregatedData){
     return modelMapper.map(aggregatedData, AggregatedDataDTO.class);
+  }
+
+  /**
+   * converte la domanin entity nel DTO
+   * @param aggregatedDataList oggetto aggregatedData
+   * @return aggregatedDataDTO
+   */
+  private List<AggregatedDataDTO> convertAggregatedDataListToAggregatedDataDTOList(List<AggregatedData> aggregatedDataList){
+    List<AggregatedDataDTO> aggregatedDataDTOs = new ArrayList<>();
+
+    for (AggregatedData aggregatedData : aggregatedDataList){
+      aggregatedDataDTOs.add(modelMapper.map(aggregatedData, AggregatedDataDTO.class));
+    }
+
+    return aggregatedDataDTOs;
   }
 }

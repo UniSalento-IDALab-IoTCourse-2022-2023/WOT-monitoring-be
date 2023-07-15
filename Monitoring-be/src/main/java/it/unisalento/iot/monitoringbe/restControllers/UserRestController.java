@@ -10,10 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/monitoringbe/user")
@@ -57,8 +54,8 @@ public class UserRestController {
    * @return lista di user
    */
   @GetMapping(value = "/getByBoilerId/{boilerId}")
-  public List<UserDTO> getByBoilerId(@PathVariable String boilerId) {
-    return Collections.singletonList(convertUserToUserDTO(userRepository.findByBoilerId(boilerId)));
+  public UserDTO getByBoilerId(@PathVariable String boilerId) {
+    return convertUserToUserDTO(userRepository.findByBoilerId(boilerId));
   }
 
   /**
@@ -68,7 +65,7 @@ public class UserRestController {
    */
   @GetMapping(value = "/getByName/{name}")
   public List<UserDTO> getByName(@PathVariable String name) {
-    return Collections.singletonList(convertUserToUserDTO(userRepository.findByName(name)));
+    return convertUserListToUserDTOList(userRepository.findByName(name));
   }
 
   /**
@@ -78,7 +75,7 @@ public class UserRestController {
    */
   @GetMapping(value = "/getBySurname/{surname}")
   public List<UserDTO> getBySurname(@PathVariable String surname) {
-    return Collections.singletonList(convertUserToUserDTO(userRepository.findBySurname(surname)));
+    return convertUserListToUserDTOList(userRepository.findBySurname(surname));
   }
 
   /**
@@ -87,8 +84,8 @@ public class UserRestController {
    * @return lista di user
    */
   @GetMapping(value = "/getByEmail/{email}")
-  public List<UserDTO> getByEmail(@PathVariable String email) {
-    return Collections.singletonList(convertUserToUserDTO(userRepository.findByEmail(email)));
+  public UserDTO getByEmail(@PathVariable String email) {
+    return convertUserToUserDTO(userRepository.findByEmail(email));
   }
 
   /**
@@ -98,7 +95,7 @@ public class UserRestController {
    */
   @GetMapping(value = "/getByAddress/{address}")
   public List<UserDTO> getByAddress(@PathVariable String address) {
-    return Collections.singletonList(convertUserToUserDTO(userRepository.findByAddress(address)));
+    return convertUserListToUserDTOList(userRepository.findByAddress(address));
   }
 
   /**
@@ -108,10 +105,13 @@ public class UserRestController {
    */
   @PostMapping(path="/createUser", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+    Date date = new Date();
 
     User user = convertUserDTOtoUser(userDTO);
+    user.setDate(date);
     User saved = userRepository.save(user);
     userDTO.setId(saved.getId());
+    userDTO.setDate(date);
 
     return new ResponseEntity<>(userDTO, HttpStatus.ACCEPTED);
   }
@@ -134,5 +134,20 @@ public class UserRestController {
    */
   private UserDTO convertUserToUserDTO(Optional<User> user){
     return modelMapper.map(user, UserDTO.class);
+  }
+
+  /**
+   * converte la domanin entity nel DTO
+   * @param userList oggetto allarme
+   * @return userDTO
+   */
+  private List<UserDTO> convertUserListToUserDTOList(List<User> userList){
+    List<UserDTO> userDTOs = new ArrayList<>();
+
+    for (User user : userList){
+      userDTOs.add(modelMapper.map(user, UserDTO.class));
+    }
+
+    return userDTOs;
   }
 }

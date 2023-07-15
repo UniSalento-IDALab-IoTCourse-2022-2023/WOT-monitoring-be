@@ -1,10 +1,9 @@
 package it.unisalento.iot.monitoringbe.repositories;
 
-import it.unisalento.iot.monitoringbe.domains.Alarm;
-import it.unisalento.iot.monitoringbe.domains.AlarmType;
 import it.unisalento.iot.monitoringbe.domains.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -13,8 +12,8 @@ import java.util.Optional;
 public interface IUserRepository extends MongoRepository<User, String> {
 
     Optional<User> findByEmail(String email);
-    Optional<User> findByName(String name);
-    Optional<User> findBySurname(String surname);
-    Optional<User> findByAddress(String address);
+    List<User> findByName(String name);
+    List<User> findBySurname(String surname);
+    List<User> findByAddress(String address);
     Optional<User> findByBoilerId(String boilerId);
 }

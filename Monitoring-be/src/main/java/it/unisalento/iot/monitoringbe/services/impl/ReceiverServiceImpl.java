@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import it.unisalento.iot.monitoringbe.domains.*;
 import it.unisalento.iot.monitoringbe.exceptions.ResourceNotFoundException;
 import it.unisalento.iot.monitoringbe.iservices.IReceiverServiceImpl;
+import it.unisalento.iot.monitoringbe.repositories.IAggregatedDataRepository;
 import it.unisalento.iot.monitoringbe.repositories.IAlarmRepository;
 import it.unisalento.iot.monitoringbe.repositories.IBoilerRepository;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -20,7 +21,7 @@ public class ReceiverServiceImpl implements IReceiverServiceImpl {
   @Autowired
   IAlarmRepository alarmRepository;
   @Autowired
-  IBoilerRepository boilerRepository;
+  IAggregatedDataRepository aggregatedDataRepository;
 
   // per intercettare le richieste
   private final CountDownLatch latch = new CountDownLatch(1);
@@ -32,7 +33,7 @@ public class ReceiverServiceImpl implements IReceiverServiceImpl {
 
     Gson gson = new Gson();
 
-    boilerRepository.save(gson.fromJson(jsonBoilerDataInfo, Boiler.class));
+    aggregatedDataRepository.save(gson.fromJson(jsonBoilerDataInfo, AggregatedData.class));
 
     latch.countDown();
   }

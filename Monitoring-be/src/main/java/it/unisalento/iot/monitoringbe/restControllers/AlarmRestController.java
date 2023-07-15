@@ -2,7 +2,9 @@ package it.unisalento.iot.monitoringbe.restControllers;
 
 import it.unisalento.iot.monitoringbe.domains.Alarm;
 import it.unisalento.iot.monitoringbe.domains.AlarmType;
+import it.unisalento.iot.monitoringbe.domains.User;
 import it.unisalento.iot.monitoringbe.dto.AlarmDTO;
+import it.unisalento.iot.monitoringbe.dto.UserDTO;
 import it.unisalento.iot.monitoringbe.repositories.IAlarmRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +59,7 @@ public class AlarmRestController {
    */
   @GetMapping(value = "/getByAlarmType/{alarmType}")
   public List<AlarmDTO> getByAlarmType(@PathVariable AlarmType alarmType) {
-    return Collections.singletonList(convertAlarmToAlarmDTO(alarmRepository.findByAlarmType(alarmType)));
+    return convertAlarmListToAlarmDTOList(alarmRepository.findByAlarmType(alarmType));
   }
 
   /**
@@ -67,7 +69,7 @@ public class AlarmRestController {
    */
   @GetMapping(value = "/getByBoilerId/{boilerId}")
   public List<AlarmDTO> getByBoilerId(@PathVariable String boilerId) {
-    return Collections.singletonList(convertAlarmToAlarmDTO(alarmRepository.findByBoilerId(boilerId)));
+    return convertAlarmListToAlarmDTOList(alarmRepository.findByBoilerId(boilerId));
   }
 
   // MODEL MAPPER:
@@ -88,5 +90,20 @@ public class AlarmRestController {
    */
   private AlarmDTO convertAlarmToAlarmDTO(Optional<Alarm> alarm){
     return modelMapper.map(alarm, AlarmDTO.class);
+  }
+
+  /**
+   * converte la domanin entity nel DTO
+   * @param alarmList oggetto allarme
+   * @return alarmDTO
+   */
+  private List<AlarmDTO> convertAlarmListToAlarmDTOList(List<Alarm> alarmList){
+    List<AlarmDTO> alarmDTOs = new ArrayList<>();
+
+    for (Alarm alarm : alarmList){
+      alarmDTOs.add(modelMapper.map(alarm, AlarmDTO.class));
+    }
+
+    return alarmDTOs;
   }
 }

@@ -1,4 +1,4 @@
-db = connect( 'mongodb://localhost:27027/test' );
+db = connect( 'mongodb://localhost:27017/test' );
 
 db.user.insertMany( [
    {

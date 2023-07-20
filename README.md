@@ -28,3 +28,9 @@ I collegamenti con tutti i componenti del progetto sono:
 
 ## Descrizione del componente corrente
 Il componente corrente è l'applicativo di monitoring, il quale permetterà, una volta avviato tutto il sistema, di acquisire i dati aggregati e gli allarmi inviati tramite protocollo MQTT per poi salvarli in un database locale. Insieme a questi dati si occuperà anche della storicizzazione dei dati riguardanti tutte le caldaie che si stanno monitorando e i clienti che le possiedono.
+
+## Avvio del sistema
+Per effettuare l'avvio del sistema basterà avviare il container:
+```
+$ docker-compose up
+```

@@ -34,3 +34,5 @@ Per effettuare l'avvio del sistema basterà avviare il container:
 ```
 $ docker-compose up
 ```
+Invece per la parte di front-end:
+...
